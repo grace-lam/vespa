@@ -80,6 +80,12 @@ class JobControllerApiHandlerHelper {
 
         cursor.setString("start", runStatus.start().toString());
         cursor.setLong("id", runStatus.id().number());
+
+        cursor.setString("targetPlatform", runStatus.versions().targetPlatform().toString());
+        cursor.setString("targetApplication", runStatus.versions().targetApplication().id());
+        runStatus.versions().sourcePlatform().ifPresent(version -> cursor.setString("sourcePlatform", version.toString()));
+        runStatus.versions().sourceApplication().ifPresent(version -> cursor.setString("sourceApplication", version.id()));
+
         String logsPath = baseUriForJobType.getPath() + "/run/" + runStatus.id().number();
         cursor.setString("logs", baseUriForJobType.resolve(logsPath).toString());
     }
